@@ -1,0 +1,76 @@
+{% set name = "py-rattler" %}
+{% set version = "0.17.0" %}
+
+package:
+  name: {{ name|lower }}-split
+  version: {{ version }}
+
+source:
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-','_') }}-{{ version }}.tar.gz
+  sha256: 6a50467077e44f1763828fb3402d84970e7c29a4ba08b85abc5e095ccac3de58
+
+build:
+  number: 0
+
+outputs:
+  - name: py-rattler
+    build:
+      skip: true  # [py<38]
+      script: {{ RECIPE_DIR }}/build_base.sh  # [unix]
+      script: {{ RECIPE_DIR }}/build_base.bat  # [win]
+    requirements:
+      build:
+        - {{ compiler('c') }}
+        - {{ stdlib("c") }}
+        - {{ compiler('rust') }}
+        - cargo-bundle-licenses
+      host:
+        - python
+        - python_abi
+        - maturin >=1.2.2,<2
+        - pip
+        - openssl  # [unix]
+      run:
+        - python
+    test:
+      imports:
+        - rattler
+      requires:
+        - abi3audit
+      commands:
+        - abi3audit %PREFIX%/Lib/site-packages/rattler/rattler.pyd -s -v --assume-minimum-abi3 3.8  # [win]
+        - abi3audit $SP_DIR/rattler/rattler.abi3.so -s -v --assume-minimum-abi3 3.8  # [not win]
+
+  - name: py_rattler
+    build:
+      noarch: generic
+      skip: true  # [not (linux and x86_64 and py<38)]
+    requirements:
+      run:
+        - {{ pin_subpackage('py-rattler', max_pin='x.x.x') }}
+    test:
+      imports:
+        - rattler
+
+about:
+  home: https://github.com/conda/rattler
+  license: BSD-3-Clause
+  license_family: BSD
+  license_file:
+    - LICENSE
+    - py-rattler/THIRDPARTY.yml
+  summary: A blazing fast library to work with the conda ecosystem
+  description: |
+    Rattler is a library that provides common functionality used within the conda
+    ecosystem. The goal of the library is to enable programs and other libraries to
+    easily interact with the conda ecosystem without being dependent on Python. Its
+    primary use case is as a library that you can use to provide conda related
+    workflows in your own tools.
+  dev_url: https://github.com/conda/rattler
+  doc_url: https://conda.github.io/rattler/py-rattler/
+
+extra:
+  feedstock-name: py-rattler
+  recipe-maintainers:
+    - baszalmstra
+    - pavelzw
