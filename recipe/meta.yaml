@@ -1,5 +1,5 @@
 {% set name = "py-rattler" %}
-{% set version = "0.17.0" %}
+{% set version = "0.21.0" %}
 
 package:
   name: {{ name|lower }}-split
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-','_') }}-{{ version }}.tar.gz
-  sha256: 6a50467077e44f1763828fb3402d84970e7c29a4ba08b85abc5e095ccac3de58
+  sha256: abc35d04489a8a8a18587683abea4b6967326ac6777559f8a53d0aa821fb48c7
 
 build:
   number: 0
@@ -20,16 +20,16 @@ outputs:
       script: {{ RECIPE_DIR }}/build_base.bat  # [win]
     requirements:
       build:
-        - {{ compiler('c') }}
         - {{ stdlib("c") }}
+        - {{ compiler('c') }}
         - {{ compiler('rust') }}
         - cargo-bundle-licenses
       host:
+        - pip
         - python
         - python_abi
-        - maturin >=1.2.2,<2
-        - pip
-        - openssl  # [unix]
+        - maturin >=1.9.0,<2
+        - openssl {{ openssl }}  # [unix]
       run:
         - python
     test:
@@ -67,7 +67,7 @@ about:
     primary use case is as a library that you can use to provide conda related
     workflows in your own tools.
   dev_url: https://github.com/conda/rattler
-  doc_url: https://conda.github.io/rattler/py-rattler/
+  doc_url: https://conda.github.io/rattler/py-rattler
 
 extra:
   feedstock-name: py-rattler
