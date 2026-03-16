@@ -16,9 +16,7 @@ outputs:
   - name: py-rattler
     build:
       skip: true  # [py<38]
-    script:
-      - {{ RECIPE_DIR }}/build_base.sh  # [unix]
-      - {{ RECIPE_DIR }}/build_base.bat  # [win]
+    script: {{ RECIPE_DIR }}/build_base.{{ 'sh' if unix else 'bat' }}
     requirements:
       build:
         - {{ stdlib("c") }}
