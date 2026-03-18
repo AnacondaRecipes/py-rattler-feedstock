@@ -1,0 +1,9 @@
+c_compiler:             # [win]
+  - vs2019              # [win]
+cxx_compiler:           # [win]
+  - vs2019              # [win]
+c_stdlib_version:       # [win]
+  - 2019.11             # [win]
+
+rust_compiler_version:  # [win]
+  - 1.90.0              # [win]
