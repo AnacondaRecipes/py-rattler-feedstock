@@ -36,7 +36,6 @@ outputs:
         - rattler
       requires:
         - pip
-        - python
         - abi3audit
       commands:
         - abi3audit %PREFIX%/Lib/site-packages/rattler/rattler.pyd -s -v --assume-minimum-abi3 3.8  # [win]
@@ -59,7 +58,6 @@ outputs:
         - rattler
       requires:
         - pip
-        - python
       commands:
         - pip check
 
