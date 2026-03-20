@@ -12,7 +12,7 @@ export MATURIN_PEP517_ARGS="--no-default-features --features=native-tls"
 
 # Run the maturin build via pip which works for direct and
 # cross-compiled builds.
-$PYTHON -m pip install . -vv
+$PYTHON -m pip install . -vv --no-deps --no-build-isolation
 
 pushd py-rattler
 cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
