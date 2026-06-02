@@ -2,6 +2,3 @@ anaconda_config_version: 1
 upstream_sources:
   - pypi:
       identifier: py-rattler
-    packages:
-      - py-rattler
-      - py_rattler
