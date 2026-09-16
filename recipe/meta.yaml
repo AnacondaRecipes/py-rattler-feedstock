@@ -28,7 +28,7 @@ outputs:
         - python
         - python_abi
         - maturin >=1.9.0,<2
-        - openssl {{ openssl }}  # [unix]
+        - openssl {{ openssl }}  # [linux]
       run:
         - python
     test:
