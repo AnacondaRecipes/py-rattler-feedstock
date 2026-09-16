@@ -20,7 +20,7 @@ else
   export MATURIN_PEP517_ARGS="--no-default-features --features=native-tls"
 fi
 
-elif [[ "$target_platform" == linux-* ]]; then
+if [[ "$target_platform" == linux-* ]]; then
   export OPENSSL_DIR="$PREFIX"
 fi
 
