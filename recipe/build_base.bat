@@ -12,11 +12,14 @@ set CARGO_PROFILE_RELEASE_STRIP=symbols
 set CARGO_PROFILE_RELEASE_LTO=fat
 
 set "CMAKE_GENERATOR=NMake Makefiles"
-maturin build -v --jobs 1 --release --strip --manylinux off --interpreter=%PYTHON% --no-default-features --features=native-tls || exit 1
+maturin build -v --jobs 1 --release --strip --manylinux off --interpreter=%PYTHON% --no-default-features --features=native-tls
+if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 
 cd py-rattler
 
 FOR /F "delims=" %%i IN ('dir /s /b target\wheels\*.whl') DO set py_rattler_wheel=%%i
-%PYTHON% -m pip install --ignore-installed --no-deps %py_rattler_wheel% -vv || exit 1
+%PYTHON% -m pip install %py_rattler_wheel% -vv --no-deps --no-build-isolation
+if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 
-cargo-bundle-licenses --format yaml --output THIRDPARTY.yml || exit 1
+cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
+if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
