@@ -1,5 +1,5 @@
 {% set name = "py-rattler" %}
-{% set version = "0.25.0" %}
+{% set version = "0.26.0" %}
 
 package:
   name: {{ name|lower }}-split
@@ -7,15 +7,15 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-','_') }}-{{ version }}.tar.gz
-  sha256: 62d282870d08404898cec16da39f6085964117d19ee2f6d4a15f3ae19bd07860
+  sha256: 247a3993dbeb1ec033cc8b6eef076997a7a85c7127a940a8baaafd903c1a243e
 
 build:
-  number: 1
+  number: 0
 
 outputs:
   - name: py-rattler
     build:
-      skip: true  # [py<38]
+      skip: true  # [py<310]
     script: build_base.{{ 'sh' if unix else 'bat' }}
     requirements:
       build:
@@ -26,8 +26,8 @@ outputs:
       host:
         - pip
         - python
-        - python_abi
-        - maturin >=1.9.0,<2
+        - python_abi 3.*
+        - maturin >=1.14.0,<2
         - openssl {{ openssl }}  # [linux]
       run:
         - python
@@ -38,8 +38,8 @@ outputs:
         - pip
         - abi3audit
       commands:
-        - abi3audit %PREFIX%/Lib/site-packages/rattler/rattler.pyd -s -v --assume-minimum-abi3 3.8  # [win]
-        - abi3audit $SP_DIR/rattler/rattler.abi3.so -s -v --assume-minimum-abi3 3.8  # [not win]
+        - abi3audit %PREFIX%/Lib/site-packages/rattler/rattler.pyd -s -v --assume-minimum-abi3 3.10  # [win]
+        - abi3audit $SP_DIR/rattler/rattler.abi3.so -s -v --assume-minimum-abi3 3.10  # [not win]
         - pip check
 
   - name: py_rattler
@@ -83,3 +83,7 @@ extra:
   recipe-maintainers:
     - baszalmstra
     - pavelzw
+  skip-lints:
+    # multi-output recipe: each output's test.commands has its own pip check;
+    # the linter only inspects the top-level test section
+    - missing_pip_check
