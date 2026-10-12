@@ -1,5 +1,5 @@
 {% set name = "py-rattler" %}
-{% set version = "0.26.0" %}
+{% set version = "0.27.1" %}
 
 package:
   name: {{ name|lower }}-split
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-','_') }}-{{ version }}.tar.gz
-  sha256: 247a3993dbeb1ec033cc8b6eef076997a7a85c7127a940a8baaafd903c1a243e
+  sha256: 08ca473cb08431684dcbbe97bd571d4c625669a9031de2d1cb360ee1340bbdf7
 
 build:
   number: 0
