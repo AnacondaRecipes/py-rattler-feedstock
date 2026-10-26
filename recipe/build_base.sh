@@ -15,9 +15,9 @@ export OPENSSL_DIR=$PREFIX
 # which is also what the PyPI wheels ship.
 # See: https://github.com/conda/rattler/issues/2749
 if [[ "$target_platform" == osx-* ]]; then
-  export MATURIN_PEP517_ARGS="--no-default-features --features=rustls"
+  export MATURIN_PEP517_ARGS="--no-default-features --features=rustls --locked"
 else
-  export MATURIN_PEP517_ARGS="--no-default-features --features=native-tls"
+  export MATURIN_PEP517_ARGS="--no-default-features --features=native-tls --locked"
 fi
 
 if [[ "$target_platform" == linux-* ]]; then
