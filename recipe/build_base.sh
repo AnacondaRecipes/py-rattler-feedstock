@@ -26,7 +26,7 @@ fi
 
 # Run the maturin build via pip which works for direct and
 # cross-compiled builds.
-$PYTHON -m pip install . -vv --no-deps --no-build-isolation
+$PYTHON -m pip install ./py-rattler -vv --no-deps --no-build-isolation
 
 pushd py-rattler
 cargo-bundle-licenses --format yaml --output THIRDPARTY.yml

@@ -25,10 +25,10 @@ if /I "%VSCMD_ARG_TGT_ARCH%"=="arm64" (
   set "CXXFLAGS=--target=aarch64-pc-windows-msvc"
 )
 
+cd py-rattler
+
 maturin build -v --jobs 1 --release --strip --manylinux off --interpreter=%PYTHON% --no-default-features --features=native-tls --locked
 if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
-
-cd py-rattler
 
 FOR /F "delims=" %%i IN ('dir /s /b target\wheels\*.whl') DO set py_rattler_wheel=%%i
 %PYTHON% -m pip install %py_rattler_wheel% -vv --no-deps --no-build-isolation

@@ -1,13 +1,13 @@
 {% set name = "py-rattler" %}
-{% set version = "0.28.0" %}
+{% set version = "0.28.1" %}
 
 package:
   name: {{ name|lower }}-split
   version: {{ version }}
 
 source:
-  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-','_') }}-{{ version }}.tar.gz
-  sha256: 84aef2aca9df0f8e0b0c635b2ff32c8568ac41e612f6f192fde12b99e48397cd
+  url: https://github.com/conda/rattler/archive/15d7a9b2c1490e6c75728fa87b1624cf2fd0c9d4.tar.gz
+  sha256: f6cfc58e2ff3629bb5eadfb93ee21a840d96fd90fc79e5e7912787044511ecf5
 
 build:
   number: 0
