@@ -15,8 +15,12 @@ if /I not "%VSCMD_ARG_TGT_ARCH%"=="arm64" (
 :: past ~240 characters, which trips an rc.exe parser bug and fails the CMake
 :: compiler check with:
 ::   manifest.rc(3) : error RC2136 : missing '=' in EXSTYLE=<flags>
-:: Same short target dir as py-rattler-build-feedstock.
-set "CARGO_TARGET_DIR=C:\.ct"
+:: Keep the target dir short for the same reason, but make it per-user: the PBP
+:: Windows pool is multiuser, so a fixed C:\.ct is owned by the account of the
+:: first task to run and every later task fails with:
+::   error: failed to open: C:\.ct\release\.cargo-build-lock
+::   Caused by: Access is denied. (os error 5)
+set "CARGO_TARGET_DIR=%USERPROFILE%\.ct"
 :: Jitter entropy module requires intrinsics headers not available in the
 :: conda build env; safe to disable on Windows where BCryptGenRandom provides
 :: OS-level entropy.
