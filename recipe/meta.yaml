@@ -10,7 +10,7 @@ source:
   sha256: e82ef5201515b7472bba28aac714a5acb6030518b664662d7ee48d4b65e40554
 
 build:
-  number: 0
+  number: 1
 
 outputs:
   - name: py-rattler
@@ -23,6 +23,10 @@ outputs:
         - {{ compiler('c') }}
         - {{ compiler('rust') }}
         - cargo-bundle-licenses
+        # aws-lc-sys is built with CMake + Ninja on Windows (see build_base.bat);
+        # Ninja avoids the NMake vs_link_exe manifest failure (RC2136)
+        - cmake  # [win]
+        - ninja-base  # [win]
         - clang  # [win and arm64]
         - lld  # [win and arm64]
       host:
@@ -38,10 +42,12 @@ outputs:
         - rattler
       requires:
         - pip
-        - abi3audit
+        # abi3audit is only published up to py3.14, so it cannot be solved into
+        # a py315 test env; the abi3 claim stays audited on the older variants
+        - abi3audit  # [py<315]
       commands:
-        - abi3audit %PREFIX%/Lib/site-packages/rattler/rattler.pyd -s -v --assume-minimum-abi3 3.10  # [win]
-        - abi3audit $SP_DIR/rattler/rattler.abi3.so -s -v --assume-minimum-abi3 3.10  # [not win]
+        - abi3audit %PREFIX%/Lib/site-packages/rattler/rattler.pyd -s -v --assume-minimum-abi3 3.10  # [win and py<315]
+        - abi3audit $SP_DIR/rattler/rattler.abi3.so -s -v --assume-minimum-abi3 3.10  # [not win and py<315]
         - pip check
 
   - name: py_rattler
