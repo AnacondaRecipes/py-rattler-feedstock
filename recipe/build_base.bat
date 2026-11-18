@@ -3,9 +3,14 @@ set "PYO3_PYTHON=%PYTHON%"
 
 :: Use CMake on win-64. The cc builder avoids CMake ASM/ClangCL issues
 :: in BuildTools-only environments on win-arm64.
+:: Ninja, not NMake: on current win-64 images the NMake generator's
+:: vs_link_exe manifest is rejected by the SDK rc.exe, which aborts the
+:: aws-lc-sys CMake compiler check with
+:: "manifest.rc(3) : error RC2136 : missing '=' in EXSTYLE=<flags>".
+:: Same generator setup as py-rattler-build-feedstock.
 if /I not "%VSCMD_ARG_TGT_ARCH%"=="arm64" (
   set AWS_LC_SYS_CMAKE_BUILDER=1
-  set "CMAKE_GENERATOR=NMake Makefiles"
+  set "CMAKE_GENERATOR=Ninja"
 )
 :: Jitter entropy module requires intrinsics headers not available in the
 :: conda build env; safe to disable on Windows where BCryptGenRandom provides

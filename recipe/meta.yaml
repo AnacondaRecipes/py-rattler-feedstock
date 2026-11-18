@@ -23,6 +23,10 @@ outputs:
         - {{ compiler('c') }}
         - {{ compiler('rust') }}
         - cargo-bundle-licenses
+        # aws-lc-sys is built with CMake + Ninja on Windows (see build_base.bat);
+        # Ninja avoids the NMake vs_link_exe manifest failure (RC2136)
+        - cmake  # [win]
+        - ninja-base  # [win]
         - clang  # [win and arm64]
         - lld  # [win and arm64]
       host:
